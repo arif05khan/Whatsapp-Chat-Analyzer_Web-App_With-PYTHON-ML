@@ -7,6 +7,7 @@ Overall, the WhatsApp Chat Analyzer web app is a useful tool for anyone who want
 
 # Screenshots of Web App
 
+![1_mYJIzyHh-p-PdteCErHrfA](https://github.com/arif05khan/Whatsapp-Chat-Analyzer_Web-App_With-PYTHON-ML/assets/105239918/4b6a79b8-8bbf-4b01-8757-04ff2092f192)
 ![WhatsApp Image 2023-05-08 at 02 22 34](https://user-images.githubusercontent.com/105239918/236702493-afaa5642-6218-48d3-8d7d-cdeaa0235edc.jpg)
 ![WhatsApp Image 2023-05-08 at 02 24 01](https://user-images.githubusercontent.com/105239918/236702502-f31f5485-7e8b-4c3c-b430-15a5740b676a.jpg)
 ![WhatsApp Image 2023-05-08 at 02 25 40](https://user-images.githubusercontent.com/105239918/236702505-6c3aa3a7-918f-4da5-88a7-173f1b96fd28.jpg)
