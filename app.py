@@ -102,12 +102,11 @@ if uploaded_file is not None:
         st.title("Wordcloud")
         df_wc = helper.create_wordcloud(selected_user, df)
         fig, ax = plt.subplots()
-        ax.imshow(df_wc)
-        st.pyplot(fig)
-
         # most common words
         most_common_df = helper.most_common_words(selected_user,df)
 
+        ax.imshow(df_wc)
+        st.pyplot(fig)
         fig,ax = plt.subplots()
 
         ax.barh(most_common_df[0],most_common_df[1])
