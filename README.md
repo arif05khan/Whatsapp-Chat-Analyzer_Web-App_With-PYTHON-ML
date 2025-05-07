@@ -15,7 +15,7 @@ Ideal for individuals, researchers, and social scientists, this tool helps uncov
 Check out the live deployed version of this project here:
 
 [**Live Demo**] ( https://whatsapp-chat-sentiment-analyzer-python-ml.streamlit.app/ ) 
-Note-: Copy this link and paste in your browser for proper working app.
+Note: Copy this link and paste it into your browser for the proper functioning of the app. It is mobile-friendly as well as desktop-compatible.
 
 ---
 
