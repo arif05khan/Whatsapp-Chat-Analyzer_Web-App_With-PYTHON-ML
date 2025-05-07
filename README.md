@@ -118,7 +118,8 @@ Upload your exported WhatsApp .txt file and explore the insights!
 ![image](https://github.com/user-attachments/assets/bbe14267-0a26-43bd-8c45-ff8f1b9dd1d2)
 
 ###Analysis of Chats
-![image](https://github.com/user-attachments/assets/fe042d6e-b277-45d0-900f-87980cc728d2)
+![WhatsApp Image 2025-05-07 at 21 23 46_00d479bf](https://github.com/user-attachments/assets/76e6ca16-8e5f-477d-83b0-ff293e15292f)
+
 ![image](https://github.com/user-attachments/assets/a93f2fe9-f362-48b4-a443-9875c6828dd5)
 ![image](https://github.com/user-attachments/assets/19737a14-6ccc-483a-9a25-651056c8dd7b)
 ![image](https://github.com/user-attachments/assets/72ab38f0-fcc1-4da4-b8ff-312f6f35f8d9)
