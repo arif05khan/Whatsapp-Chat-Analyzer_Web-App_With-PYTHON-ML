@@ -113,7 +113,7 @@ Upload your exported WhatsApp .txt file and explore the insights!
 
 ##📸 **Screenshots**
 ###Dashboard
-WhatsApp Image 2025-05-07 at 21.23.46_00d479bf.jpg
+(./WhatsApp%20Image%202025-05-07%20at%2021.23.46_00d479bf.jpg)
 
 
 ###Analysis of Chats
