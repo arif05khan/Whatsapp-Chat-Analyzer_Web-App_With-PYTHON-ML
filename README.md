@@ -7,15 +7,15 @@ Ideal for individuals, researchers, and social scientists, this tool helps uncov
 📈 Chat Analysis
 Total messages, words, media, links, emojis, and stickers
 
-Most active users (group chats)
+#Most active users (group chats)
 
-Word frequency (bar charts + WordCloud)
+#Word frequency (bar charts + WordCloud)
 
-Emoji contribution and usage analysis
+#Emoji contribution and usage analysis
 
-Daily and monthly message timelines
+#Daily and monthly message timelines
 
-Weekly/monthly activity maps
+#Weekly/monthly activity maps
 
 Heatmaps of message activity (day vs hour)
 
