@@ -157,7 +157,8 @@ Upload your exported WhatsApp .txt file and explore the insights!
 ![image](https://github.com/user-attachments/assets/dbd9715f-425c-4f78-b5dd-860e54577521)
 ![image](https://github.com/user-attachments/assets/b48ec2a0-d7e3-481b-9de3-21dbfe05a40a)
 ![image](https://github.com/user-attachments/assets/d9536264-eb16-4650-bec7-98f25a4124fb)
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/17dda3d9-2ab0-4e61-a70a-3523156e0d88)
+
 
 
 📤 Export Options
