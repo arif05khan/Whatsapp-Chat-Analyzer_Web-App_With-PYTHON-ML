@@ -1,20 +1,134 @@
-# Whatsapp-Chat-Analyzer_Web-App_With-PYTHON-ML
-The WhatsApp Chat Analyzer web app is a PyCharm project that allows users to upload their WhatsApp chat history and perform various analyses on the data. The app provides a user-friendly interface and offers a range of features, including statistics on the number of messages, media shared, and links shared, as well as monthly and daily timelines and activity maps. It also includes a sentiment analysis feature that uses the TextBlob library to perform sentiment analysis on the chat data and visualize the results in a pie chart.
+📊 WhatsApp Chat & Sentiment Analyzer Web App
+The WhatsApp Chat & Sentiment Analyzer is a robust and interactive web application that allows users to upload and analyze their WhatsApp chat history. It provides deep insights into messaging behavior, sentiment trends, keyword usage, and message lengths, all through a user-friendly interface built with Python and Streamlit.
 
-The project is built using Streamlit, a popular Python framework for building interactive web apps, and relies on several other Python libraries, including pandas, matplotlib, seaborn, and TextBlob. The code is well-organized and easy to understand, making it easy for other developers to build on the project or modify it to suit their needs.
+Ideal for individuals, researchers, and social scientists, this tool helps uncover patterns in digital communication and emotional expression.
 
-Overall, the WhatsApp Chat Analyzer web app is a useful tool for anyone who wants to gain insights into their WhatsApp chat data and better understand their communication patterns.
+🚀 Key Features
+📈 Chat Analysis
+Total messages, words, media, links, emojis, and stickers
 
-# Screenshots of Web App
+Most active users (group chats)
 
-![1_mYJIzyHh-p-PdteCErHrfA](https://github.com/arif05khan/Whatsapp-Chat-Analyzer_Web-App_With-PYTHON-ML/assets/105239918/4b6a79b8-8bbf-4b01-8757-04ff2092f192)
-![WhatsApp Image 2023-05-08 at 02 22 34](https://user-images.githubusercontent.com/105239918/236702493-afaa5642-6218-48d3-8d7d-cdeaa0235edc.jpg)
-![WhatsApp Image 2023-05-08 at 02 24 01](https://user-images.githubusercontent.com/105239918/236702502-f31f5485-7e8b-4c3c-b430-15a5740b676a.jpg)
-![WhatsApp Image 2023-05-08 at 02 25 40](https://user-images.githubusercontent.com/105239918/236702505-6c3aa3a7-918f-4da5-88a7-173f1b96fd28.jpg)
-![WhatsApp Image 2023-05-08 at 02 26 13](https://user-images.githubusercontent.com/105239918/236702512-f0eaefd1-f9dd-447e-b4c1-6a1cfb5685c6.jpg)
-![WhatsApp Image 2023-05-08 at 02 27 14](https://user-images.githubusercontent.com/105239918/236702518-5265b8ac-058e-40b1-b75a-9080c62c6776.jpg)
-![WhatsApp Image 2023-05-08 at 02 28 10](https://user-images.githubusercontent.com/105239918/236702522-281589fd-5cf7-4cc8-ac9d-df5b76c4feca.jpg)
-![WhatsApp Image 2023-05-08 at 02 29 04](https://user-images.githubusercontent.com/105239918/236702524-7d0cc018-3562-4229-8f55-86f865438d36.jpg)
-![WhatsApp Image 2023-05-08 at 02 29 51](https://user-images.githubusercontent.com/105239918/236702528-ed38cb6d-29fb-4691-9f82-5c876e9c717c.jpg)
-![WhatsApp Image 2023-05-08 at 02 30 50](https://user-images.githubusercontent.com/105239918/236702536-8e2215d0-26af-4a82-b79b-a20075c96be8.jpg)
+Word frequency (bar charts + WordCloud)
 
+Emoji contribution and usage analysis
+
+Daily and monthly message timelines
+
+Weekly/monthly activity maps
+
+Heatmaps of message activity (day vs hour)
+
+Response time analysis between users
+
+CSV export for all chat stats
+
+😊 Sentiment Analysis
+Positive, neutral, and negative classification using VADER (NLTK)
+
+Sentiment distribution and trends over time
+
+Sentiment transitions between messages
+
+Sentiment intensity histograms
+
+Correlation between sentiments and emojis
+
+Sentiment-based word clouds
+
+Sentiment-wise message length analysis
+
+Weekly and monthly sentiment heatmaps
+
+🔍 Keyword Analysis
+Keyword search with user and timestamp
+
+Keyword frequency timeline
+
+📝 Message Length Analysis
+Avg. message length per user
+
+Length trends over time (monthly)
+
+Distribution histograms
+
+Message length by sentiment and weekday
+
+Top 5 longest and shortest messages
+
+⚙️ Additional Features
+Date range filter for focused analysis
+
+User-specific or group-level filtering
+
+Light/dark mode toggle
+
+Robust error handling and user feedback
+
+🛠️ Tech Stack   &   Tools
+Category	        Tool/Library
+Language	         Python 3.x
+Web Framework	     Streamlit
+Data Analysis	     Pandas
+Visualization	     Matplotlib, Plotly
+NLP / Sentiment	   NLTK (VADER)
+Emoji Handling	   Emoji (Python)
+Text Processing	   Regular Expressions
+UI/UX Features	   Streamlit Components
+IDE	               PyCharm / VS Code
+
+📂 Project Structure
+bash
+Copy
+Edit
+📦 WhatsApp_Chat_Sentiment_Analyzer
+├── app.py              # Main Streamlit app
+├── helper.py           # Chat analysis functions
+├── preprocessor.py     # Parsing and cleaning logic
+├── requirements.txt    # Project dependencies
+└── README.md           # Project documentation
+📸 Screenshots
+Dashboard	Sentiment	WordCloud
+		
+
+🚀 Getting Started
+Prerequisites
+Python 3.8+
+
+pip
+
+Installation
+Clone the repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/arif05khan/Whatsapp-Chat-Analyzer_Web-App_With-PYTHON-ML.git
+cd Whatsapp-Chat-Analyzer_Web-App_With-PYTHON-ML
+Install the required packages:
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Run the app:
+
+bash
+Copy
+Edit
+streamlit run app.py
+Upload your exported WhatsApp .txt file and explore the insights!
+
+📤 Export Options
+Download chat statistics and insights as CSV from the sidebar.
+
+📌 Notes
+The app supports WhatsApp .txt export format (including 2025 format).
+
+It automatically handles different timestamp and message formats.
+
+Works for both individual and group chats.
+
+👨‍💻 Author
+Arif Rasul
+📍 Delhi, India
