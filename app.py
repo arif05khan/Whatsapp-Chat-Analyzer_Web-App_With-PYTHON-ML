@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 import plotly.figure_factory as ff
 
 # Download NLTK data for VADER
-nltk.download('vader_lexicon')
+nltk.data.path.append('nltk_data')
 
 # Initialize session state for theme and analysis
 if 'theme' not in st.session_state:
