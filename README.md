@@ -5,17 +5,18 @@ Ideal for individuals, researchers, and social scientists, this tool helps uncov
 
 🚀 Key Features
 📈 Chat Analysis
+
 Total messages, words, media, links, emojis, and stickers
 
-#Most active users (group chats)
+Most active users (group chats)
 
-#Word frequency (bar charts + WordCloud)
+Word frequency (bar charts + WordCloud)
 
-#Emoji contribution and usage analysis
+Emoji contribution and usage analysis
 
-#Daily and monthly message timelines
+Daily and monthly message timelines
 
-#Weekly/monthly activity maps
+Weekly/monthly activity maps
 
 Heatmaps of message activity (day vs hour)
 
@@ -56,6 +57,8 @@ Message length by sentiment and weekday
 
 Top 5 longest and shortest messages
 
+
+
 ⚙️ Additional Features
 Date range filter for focused analysis
 
@@ -64,6 +67,7 @@ User-specific or group-level filtering
 Light/dark mode toggle
 
 Robust error handling and user feedback
+
 
 🛠️ Tech Stack   &   Tools
 Category	        Tool/Library
