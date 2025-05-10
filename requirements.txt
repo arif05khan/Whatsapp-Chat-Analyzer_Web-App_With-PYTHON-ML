@@ -1,9 +1,17 @@
+# Core framework for Streamlit app
 streamlit==1.32.0
+
+# Data manipulation and analysis
 pandas==2.1.4
-matplotlib==3.8.2
-seaborn==0.13.2
-wordcloud==1.9.3
-emoji==2.9.0
-nltk==3.8.1
-plotly==5.24.0
-urlextract==1.9.0
+numpy==1.26.4  # Added for compatibility with pandas, matplotlib, seaborn, and wordcloud
+
+# Visualization libraries
+matplotlib==3.8.2  # For plotting (used with seaborn)
+seaborn==0.13.2   # For advanced visualizations
+plotly==5.24.0    # For interactive plots
+wordcloud==1.9.3  # For generating word clouds
+
+# Text processing and analysis
+nltk==3.8.1       # For sentiment analysis (VADER)
+emoji==2.9.0      # For emoji handling in messages
+urlextract==1.9.0 # For extracting URLs from messages
