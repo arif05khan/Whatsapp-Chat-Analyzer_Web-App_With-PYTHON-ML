@@ -11,8 +11,9 @@ import re
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 
-# Download NLTK data for VADER
-nltk.data.path.append('nltk_data')
+# Download NLTK data for VADER and WordCloud
+nltk.download('vader_lexicon', quiet=True)  # For SentimentIntensityAnalyzer in preprocessor.py
+nltk.download('punkt', quiet=True)          # For tokenization in WordCloud (used in helper.py)
 
 # Initialize session state for theme and analysis
 if 'theme' not in st.session_state:
@@ -164,8 +165,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Add the WhatsApp logo image below the title
-st.image("WhatsApp_SCREEN.png")
+# Add the WhatsApp logo image below the title with error handling
+try:
+    st.image("WhatsApp_SCREEN.png")
+except FileNotFoundError:
+    st.warning("WhatsApp logo image (WhatsApp_SCREEN.png) not found. Please ensure the file is uploaded to your GitHub repository.")
 
 # Sidebar
 st.sidebar.title("WhatsApp Chat & Sentiment Analyzer")
