@@ -1,7 +1,10 @@
 import re
 import pandas as pd
+import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+# Download the VADER lexicon for sentiment analysis
+nltk.download('vader_lexicon', quiet=True)
 
 def preprocess(data):
     # Regular expression for WhatsApp chat format
