@@ -3,6 +3,11 @@ from wordcloud import WordCloud
 import pandas as pd
 from collections import Counter
 import emoji
+import re
+import logging
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO)
 
 extract = URLExtract()
 
@@ -44,6 +49,7 @@ def chat_create_wordcloud(selected_user, df):
 def chat_most_common_words(selected_user, df):
     f = open('stop_hinglish.txt', 'r')
     stop_words = f.read()
+    f.close()
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     temp = df[df['user'] != 'group_notification'].copy()
@@ -52,9 +58,13 @@ def chat_most_common_words(selected_user, df):
         return pd.DataFrame()
     words = []
     for message in temp['message']:
-        for word in message.lower().split():
-            if word not in stop_words:
+        # Clean words: remove punctuation, convert to lowercase, and split
+        cleaned_message = re.sub(r'[^\w\s]', '', str(message).lower())
+        for word in cleaned_message.split():
+            # Only include words longer than 1 character to avoid noise
+            if word not in stop_words and len(word) > 1:
                 words.append(word)
+    logging.info(f"Processed {len(words)} words for common words analysis")
     most_common_df = pd.DataFrame(Counter(words).most_common(20))
     return most_common_df
 
@@ -269,14 +279,17 @@ def sentiment_percentage(df, k):
 def sentiment_create_wordcloud(selected_user, df, k):
     f = open('stop_hinglish.txt', 'r')
     stop_words = f.read()
+    f.close()
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     temp = df[df['user'] != 'group_notification'].copy()
     temp = temp[~temp['message'].str.contains('<Media omitted>', na=False)].copy()
     def remove_stop_words(message):
         y = []
-        for word in str(message).lower().split():
-            if word not in stop_words:
+        # Clean message: remove punctuation, convert to lowercase
+        cleaned_message = re.sub(r'[^\w\s]', '', str(message).lower())
+        for word in cleaned_message.split():
+            if word not in stop_words and len(word) > 1:  # Exclude words shorter than 2 characters
                 y.append(word)
         return " ".join(y)
     wc = WordCloud(width=500, height=500, min_font_size=10, background_color='white')
@@ -285,11 +298,13 @@ def sentiment_create_wordcloud(selected_user, df, k):
     if temp.empty:
         return None
     df_wc = wc.generate(temp['message'].str.cat(sep=" "))
+    logging.info(f"Generated word cloud with {len(temp)} messages for sentiment value {k}")
     return df_wc
 
 def sentiment_most_common_words(selected_user, df, k):
     f = open('stop_hinglish.txt', 'r')
     stop_words = f.read()
+    f.close()
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     temp = df[df['user'] != 'group_notification'].copy()
@@ -298,9 +313,12 @@ def sentiment_most_common_words(selected_user, df, k):
         return pd.DataFrame()
     words = []
     for message in temp['message'][temp['value'] == k]:
-        for word in str(message).lower().split():
-            if word not in stop_words:
+        # Clean words: remove punctuation, convert to lowercase, and split
+        cleaned_message = re.sub(r'[^\w\s]', '', str(message).lower())
+        for word in cleaned_message.split():
+            if word not in stop_words and len(word) > 1:  # Exclude words shorter than 2 characters
                 words.append(word)
+    logging.info(f"Processed {len(words)} words for sentiment {k} common words analysis")
     most_common_df = pd.DataFrame(Counter(words).most_common(20))
     return most_common_df
 
@@ -319,7 +337,7 @@ def sentiment_trend(selected_user, df):
     for i in range(merged.shape[0]):
         time.append(merged['month'][i] + "-" + str(merged['year'][i]))
     merged['time'] = time
-    return merged[['time', 'Positive', 'Neutral', 'Negative']]
+    return merged
 
 def sentiment_intensity_distribution(selected_user, df):
     if selected_user != 'Overall':
@@ -327,11 +345,14 @@ def sentiment_intensity_distribution(selected_user, df):
     df = df[df['user'] != 'group_notification'].copy()
     if df.empty:
         return pd.DataFrame()
-    intensity_data = {
-        'Positive': df['po'],
-        'Negative': df['ne'],
-        'Neutral': df['nu']
-    }
+    intensity_data = []
+    for _, row in df.iterrows():
+        if row['value'] == 1:
+            intensity_data.append({'Intensity': row['pos'], 'Sentiment': 'Positive'})
+        elif row['value'] == -1:
+            intensity_data.append({'Intensity': row['neg'], 'Sentiment': 'Negative'})
+        else:
+            intensity_data.append({'Intensity': row['neu'], 'Sentiment': 'Neutral'})
     return pd.DataFrame(intensity_data)
 
 def sentiment_transition_analysis(selected_user, df):
@@ -340,32 +361,19 @@ def sentiment_transition_analysis(selected_user, df):
     df = df[df['user'] != 'group_notification'].copy()
     if len(df) < 2:
         return pd.DataFrame()
+    df = df.sort_values('date')
     transitions = []
     sentiment_labels = {1: 'Positive', 0: 'Neutral', -1: 'Negative'}
     for i in range(len(df) - 1):
-        current_sentiment = df['value'].iloc[i]
-        next_sentiment = df['value'].iloc[i + 1]
-        if pd.notna(current_sentiment) and pd.notna(next_sentiment):
-            transition = f"{sentiment_labels[current_sentiment]} -> {sentiment_labels[next_sentiment]}"
-            transitions.append(transition)
+        current_sentiment = sentiment_labels[df.iloc[i]['value']]
+        next_sentiment = sentiment_labels[df.iloc[i + 1]['value']]
+        transition = f"{current_sentiment} to {next_sentiment}"
+        transitions.append(transition)
     transition_counts = Counter(transitions)
     transition_df = pd.DataFrame.from_dict(transition_counts, orient='index', columns=['Count']).reset_index()
-    transition_df.rename(columns={'index': 'Transition'}, inplace=True)
-    transition_df = transition_df.sort_values(by='Count', ascending=False)
+    transition_df = transition_df.rename(columns={'index': 'Transition'})
+    transition_df = transition_df.sort_values('Count', ascending=False)
     return transition_df
-
-def sentiment_by_message_length(selected_user, df):
-    if selected_user != 'Overall':
-        df = df[df['user'] == selected_user]
-    df = df[df['user'] != 'group_notification'].copy()
-    df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
-    if df.empty:
-        return pd.DataFrame()
-    df['msg_length'] = df['message'].str.len()
-    sentiment_labels = {1: 'Positive', 0: 'Neutral', -1: 'Negative'}
-    df['sentiment_label'] = df['value'].map(sentiment_labels)
-    avg_length = df.groupby('sentiment_label')['msg_length'].mean().round(2).reset_index()
-    return avg_length
 
 def sentiment_emoji_correlation(selected_user, df):
     if selected_user != 'Overall':
@@ -374,47 +382,53 @@ def sentiment_emoji_correlation(selected_user, df):
     if df.empty:
         return pd.DataFrame()
     sentiment_labels = {1: 'Positive', 0: 'Neutral', -1: 'Negative'}
-    results = []
-    for sentiment_value, sentiment_label in sentiment_labels.items():
-        sentiment_df = df[df['value'] == sentiment_value]
-        emojis = []
-        for message in sentiment_df['message']:
-            emojis.extend([c for c in str(message) if c in emoji.EMOJI_DATA])
-        if emojis:
-            emoji_counts = Counter(emojis).most_common(5)
-            for emoji_char, count in emoji_counts:
-                results.append({
-                    'Sentiment': sentiment_label,
-                    'Emoji': emoji_char,
-                    'Count': count
-                })
-    return pd.DataFrame(results)
+    emoji_sentiment = []
+    for _, row in df.iterrows():
+        message = str(row['message'])
+        sentiment = sentiment_labels[row['value']]
+        emojis = [c for c in message if c in emoji.EMOJI_DATA]
+        for e in emojis:
+            emoji_sentiment.append({'Emoji': e, 'Sentiment': sentiment})
+    if not emoji_sentiment:
+        return pd.DataFrame()
+    emoji_df = pd.DataFrame(emoji_sentiment)
+    emoji_counts = emoji_df.groupby(['Emoji', 'Sentiment']).size().reset_index(name='Count')
+    emoji_counts = emoji_counts.sort_values('Count', ascending=False).head(15)
+    return emoji_counts
+
+def sentiment_by_message_length(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['user'] == selected_user]
+    df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
+    sentiment_labels = {1: 'Positive', 0: 'Neutral', -1: 'Negative'}
+    df['sentiment_label'] = df['value'].map(sentiment_labels)
+    length_by_sentiment = df.groupby('sentiment_label')['msg_length'].mean().reset_index()
+    return length_by_sentiment
 
 # Keyword Analysis Functions
 def keyword_search(selected_user, df, keyword):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
-    if df.empty:
-        return pd.DataFrame()
-    keyword_df = df[df['message'].str.contains(keyword, case=False, na=False)]
+    keyword_df = df[df['message'].str.contains(keyword, case=False, na=False)].copy()
+    keyword_df['date'] = keyword_df['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
     return keyword_df
 
 def keyword_timeline(selected_user, df, keyword):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
-    if df.empty:
-        return pd.DataFrame()
-    keyword_df = df[df['message'].str.contains(keyword, case=False, na=False)]
+    keyword_df = df[df['message'].str.contains(keyword, case=False, na=False)].copy()
     if keyword_df.empty:
         return pd.DataFrame()
-    timeline = keyword_df.groupby(['year', 'month_num', 'month']).count()['message'].reset_index()
+    timeline = keyword_df.groupby(['year', 'month_num', 'month']).size().reset_index(name='count')
     time = []
     for i in range(timeline.shape[0]):
         time.append(timeline['month'][i] + "-" + str(timeline['year'][i]))
     timeline['time'] = time
-    timeline['count'] = timeline['message']
     return timeline
 
 # Message Length Analysis Functions
@@ -422,74 +436,92 @@ def message_length_by_user(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
     df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
     if df.empty:
         return pd.DataFrame()
-    df['msg_length'] = df['message'].str.len()
-    length_df = df.groupby('user')['msg_length'].mean().reset_index(name='avg_length').round(2)
-    return length_df
+    avg_length = df.groupby('user')['msg_length'].mean().round(2).reset_index()
+    avg_length = avg_length.rename(columns={'msg_length': 'avg_length'})
+    avg_length = avg_length.sort_values('avg_length', ascending=False)
+    return avg_length
 
 def message_length_timeline(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
     df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
     if df.empty:
         return pd.DataFrame()
-    df['msg_length'] = df['message'].str.len()
-    timeline = df.groupby(['year', 'month_num', 'month'])['msg_length'].mean().reset_index(name='avg_length')
+    timeline = df.groupby(['year', 'month_num', 'month'])['msg_length'].mean().round(2).reset_index(name='avg_length')
     time = []
     for i in range(timeline.shape[0]):
         time.append(timeline['month'][i] + "-" + str(timeline['year'][i]))
     timeline['time'] = time
-    timeline['avg_length'] = timeline['avg_length'].round(2)
     return timeline
 
 def message_length_distribution(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
     df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
     if df.empty:
-        return pd.Series()
-    df['msg_length'] = df['message'].str.len()
+        return pd.DataFrame()
     return df['msg_length']
 
 def message_length_by_sentiment(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
     df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
     if df.empty:
         return pd.DataFrame()
-    df['msg_length'] = df['message'].str.len()
     sentiment_labels = {1: 'Positive', 0: 'Neutral', -1: 'Negative'}
     df['sentiment_label'] = df['value'].map(sentiment_labels)
-    avg_length = df.groupby('sentiment_label')['msg_length'].mean().round(2).reset_index()
-    return avg_length
+    length_by_sentiment = df.groupby('sentiment_label')['msg_length'].mean().reset_index()
+    return length_by_sentiment
 
 def message_length_by_day_of_week(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
     df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
     if df.empty:
         return pd.DataFrame()
-    df['msg_length'] = df['message'].str.len()
+    length_by_day = df.groupby('day_name')['msg_length'].mean().reset_index()
     all_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    avg_length = df.groupby('day_name')['msg_length'].mean().round(2).reindex(all_days, fill_value=0)
-    return avg_length.reset_index()
+    length_by_day = length_by_day.set_index('day_name').reindex(all_days, fill_value=0).reset_index()
+    length_by_day = length_by_day.rename(columns={'msg_length': 'msg_length'})
+    return length_by_day
 
 def extreme_messages(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
     df = df[df['user'] != 'group_notification'].copy()
+    if df.empty:
+        return pd.DataFrame(), pd.DataFrame()
+    df['msg_length'] = df['message'].apply(lambda x: len(str(x)))
     df = df[~df['message'].str.contains('<Media omitted>', na=False)].copy()
     if df.empty:
         return pd.DataFrame(), pd.DataFrame()
-    df['msg_length'] = df['message'].str.len()
-    # Longest messages (top 5)
+    df = df[df['msg_length'] > 0].copy()
+    if df.empty:
+        return pd.DataFrame(), pd.DataFrame()
     longest = df.nlargest(5, 'msg_length')[['date', 'user', 'message', 'msg_length']]
-    # Shortest messages (top 5, excluding zero-length messages)
-    shortest = df[df['msg_length'] > 0].nsmallest(5, 'msg_length')[['date', 'user', 'message', 'msg_length']]
+    shortest = df.nsmallest(5, 'msg_length')[['date', 'user', 'message', 'msg_length']]
+    longest['date'] = longest['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    shortest['date'] = shortest['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
     return longest, shortest
