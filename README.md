@@ -148,7 +148,8 @@ Works for both individual and group chats.
 
 ## 📜 License
 
-This project is licensed under a **customized MIT License**. If you wish to use, modify, or distribute this project, **please contact the author** at: ark396336@gmail.com
+This project is licensed under a **customized MIT License**. If you wish to use, modify, or distribute
+this project, **please contact the author** at: ark396336@gmail.com
 
 👨‍💻 Author
 Arif Rasul Khan
