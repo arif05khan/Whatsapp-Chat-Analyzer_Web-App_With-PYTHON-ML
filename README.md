@@ -1,4 +1,10 @@
 # 📊 WhatsApp Chat & Sentiment Analyzer Web App
+![License](https://img.shields.io/badge/license-Custom-blue)
+![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)
+![Streamlit](https://img.shields.io/badge/built%20with-Streamlit-orange)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Platform](https://img.shields.io/badge/platform-web-lightgrey)
+
 
 The **WhatsApp Chat & Sentiment Analyzer** is an interactive web application built with Python and Streamlit that allows users to upload and analyze their WhatsApp chat history. It provides valuable insights into messaging behavior, sentiment trends, keyword usage, and message lengths, all presented through an intuitive and user-friendly interface.
 
